@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -65,7 +65,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: 15, color: "#fff" }}>
-                {clientInfo?.name || "Гость"}
+                {clientInfo?.name || "Ð“Ð¾ÑÑ‚ÑŒ"}
               </div>
               <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
                 {clientInfo?.email || clientInfo?.phone || ""}
@@ -76,7 +76,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             onClick={onClose}
             style={{ background: "none", border: "none", color: "#888", fontSize: 22, padding: 4, lineHeight: 1 }}
           >
-            ✕
+            âœ•
           </button>
         </div>
 
@@ -84,15 +84,15 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div style={{ padding: "16px 20px", borderBottom: "1px solid #1a1a1a" }}>
           <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: -0.5 }}>
             <span style={{ color: "#ef4444" }}>Ekidos</span>
-            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Токтогул</span>
+            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Ð¢Ð¾ÐºÑ‚Ð¾Ð³ÑƒÐ»</span>
           </div>
         </div>
 
         {/* Menu items */}
         <nav style={{ flex: 1, padding: "8px 0" }}>
           {[
-            { icon: "👤", label: "Профиль", path: "/profile" },
-            { icon: "⚙️", label: "Настройки", path: "/settings" },
+            { icon: "ðŸ‘¤", label: "ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ", path: "/profile" },
+            { icon: "âš™ï¸", label: "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸", path: "/settings" },
           ].map((item) => (
             <button
               key={item.path}
@@ -129,7 +129,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
               fontSize: 14, fontWeight: 600,
             }}
           >
-            Выйти
+            Ð’Ñ‹Ð¹Ñ‚Ð¸
           </button>
         </div>
       </div>
@@ -195,7 +195,7 @@ function HomeMap({ onReady }: { onReady: (mapRef: React.MutableRefObject<unknown
           seen.add(d.id);
           const taxiIcon = L.divIcon({
             className: "",
-            html: `<div style="font-size:22px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">🚖</div>`,
+            html: `<div style="font-size:22px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">ðŸš–</div>`,
             iconSize: [28, 28],
             iconAnchor: [14, 14],
           });
@@ -230,7 +230,7 @@ function HomeMap({ onReady }: { onReady: (mapRef: React.MutableRefObject<unknown
   return (
     <div
       ref={mapElRef}
-      style={{ width: "100%", height: "100%", background: "#1a1a2e" }}
+      style={{ width: "100%", height: "100%", background: "#1a1a2e", zIndex: 1, position: "relative" }}
     />
   );
 }
@@ -297,9 +297,9 @@ export default function HomePage() {
           backdropFilter: "blur(8px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
         }}
-        aria-label="Открыть меню"
+        aria-label="ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¼ÐµÐ½ÑŽ"
       >
-        ☰
+        â˜°
       </button>
 
       {/* App title */}
@@ -347,10 +347,10 @@ export default function HomePage() {
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
-          🚖 Заказать такси
+          ðŸš– Ð—Ð°ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ñ‚Ð°ÐºÑÐ¸
         </button>
         <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
-          Токтогул — быстро и надёжно
+          Ð¢Ð¾ÐºÑ‚Ð¾Ð³ÑƒÐ» â€” Ð±Ñ‹ÑÑ‚Ñ€Ð¾ Ð¸ Ð½Ð°Ð´Ñ‘Ð¶Ð½Ð¾
         </div>
       </div>
 
@@ -359,3 +359,4 @@ export default function HomePage() {
     </div>
   );
 }
+
