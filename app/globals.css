@@ -1,0 +1,38 @@
+/* Ekidos client - minimal global reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+input, button, textarea, select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Leaflet dark theme overrides */
+.leaflet-container {
+  background: #1a1a2e !important;
+  font-family: inherit !important;
+}
+
+.leaflet-tile {
+  filter: brightness(0.75) saturate(0.8) hue-rotate(180deg) invert(1);
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
