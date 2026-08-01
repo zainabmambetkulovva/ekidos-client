@@ -265,7 +265,7 @@ export default function HomePage() {
   return (
     <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden", background: "#0a0a0a" }}>
       {/* Map */}
-      <div style={{ position: "absolute", inset: 0 }}>
+      <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
         <HomeMap onReady={handleMapReady} />
       </div>
 
@@ -287,7 +287,7 @@ export default function HomePage() {
       <button
         onClick={() => setDrawerOpen(true)}
         style={{
-          position: "absolute", top: 16, left: 16, zIndex: 20,
+          position: "absolute", top: 16, left: 16, zIndex: 100,
           width: 44, height: 44,
           background: "rgba(17,17,17,0.92)",
           border: "1px solid rgba(255,255,255,0.1)",
@@ -314,7 +314,7 @@ export default function HomePage() {
 
       {/* Order button */}
       <div style={{
-        position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)",
+        position: "absolute", bottom: 40, left: "50%", zIndex: 100,, transform: "translateX(-50%)",
         zIndex: 20, width: "calc(100% - 32px)", maxWidth: 380,
       }}>
         <button
@@ -359,4 +359,5 @@ export default function HomePage() {
     </div>
   );
 }
+
 
