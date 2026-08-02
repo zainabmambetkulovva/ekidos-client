@@ -623,17 +623,17 @@ export default function OrderPage() {
         {/* Order Button */}
         <button
           onClick={handleOrder}
-          disabled={!fromCoords || searching}
+          disabled={!fromCoords && !fromAddress || searching}
           style={{
             width: "100%",
             padding: "14px",
             borderRadius: 12,
             border: "none",
             background:
-              fromCoords && !searching
+              (fromCoords || fromAddress) && !searching
                 ? "linear-gradient(135deg, #ef4444, #dc2626)"
                 : "rgba(255,255,255,0.15)",
-            color: fromCoords ? "#fff" : "rgba(255,255,255,0.4)",
+            color: (fromCoords || fromAddress) ? "#fff" : "rgba(255,255,255,0.4)",
             fontSize: 16,
             fontWeight: 700,
             cursor: fromCoords && !searching ? "pointer" : "not-allowed",
