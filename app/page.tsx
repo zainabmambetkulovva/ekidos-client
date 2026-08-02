@@ -4,29 +4,24 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { t } from "./i18n";
 
-// ============================================================================
-// EKIDOS CLIENT — Main Entry
-// Flow: Welcome Splash -> Home (big red button) -> /order (map page)
-// ============================================================================
-
 export default function HomePage() {
   const router = useRouter();
   const [phase, setPhase] = useState<"splash" | "home">("splash");
-  const [fadeIn, setFadeIn] = useState(false);
-  const [btnVisible, setBtnVisible] = useState(false);
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
-    // Check auth
     const token = localStorage.getItem("client-token");
     if (!token) { router.replace("/login"); return; }
 
-    // Splash animation
-    setTimeout(() => setFadeIn(true), 100);
-    setTimeout(() => setPhase("home"), 2000);
-    setTimeout(() => setBtnVisible(true), 2400);
+    // Smooth animation sequence
+    setTimeout(() => setStep(1), 200);   // icon appears
+    setTimeout(() => setStep(2), 800);   // text appears
+    setTimeout(() => setStep(3), 2200);  // transition to home
+    setTimeout(() => setPhase("home"), 2600);
+    setTimeout(() => setStep(4), 2900);  // home content appears
   }, [router]);
 
-  // ── WELCOME SPLASH ──
+  // SPLASH
   if (phase === "splash") {
     return (
       <div style={{
@@ -34,99 +29,101 @@ export default function HomePage() {
         background: "#ffffff",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
-        overflow: "hidden",
+        gap: 24,
+        transition: "opacity 0.5s ease",
+        opacity: step >= 3 ? 0 : 1,
       }}>
-        {/* Logo */}
+        {/* Taxi icon */}
         <div style={{
-          opacity: fadeIn ? 1 : 0,
-          transform: fadeIn ? "scale(1) translateY(0)" : "scale(0.8) translateY(20px)",
-          transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          width: 120, height: 120, borderRadius: "50%",
+          background: "#fef1f1",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 56,
+          opacity: step >= 1 ? 1 : 0,
+          transform: step >= 1 ? "scale(1) translateY(0)" : "scale(0.5) translateY(20px)",
+          transition: "all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)",
         }}>
-          <div style={{
-            fontSize: 48, fontWeight: 900, letterSpacing: -2,
-            color: "#ef4444", textAlign: "center",
-          }}>
+          {"\u{1F696}"}
+        </div>
+
+        {/* Welcome text */}
+        <div style={{
+          opacity: step >= 2 ? 1 : 0,
+          transform: step >= 2 ? "translateY(0)" : "translateY(15px)",
+          transition: "all 0.6s ease 0.1s",
+          textAlign: "center",
+        }}>
+          <div style={{ fontSize: 32, fontWeight: 800, color: "#ef4444", letterSpacing: -1 }}>
             EKIDOS
           </div>
           <div style={{
-            fontSize: 14, color: "#999", textAlign: "center",
-            marginTop: 8, letterSpacing: 4, textTransform: "uppercase",
+            fontSize: 16, color: "#888", marginTop: 8,
+            letterSpacing: 2, fontWeight: 500,
           }}>
-            taxi
+            Welcome
           </div>
         </div>
 
-        {/* Decorative dots */}
+        {/* Subtle dots */}
         <div style={{
-          display: "flex", gap: 6, marginTop: 40,
-          opacity: fadeIn ? 1 : 0,
-          transition: "opacity 1s ease 0.5s",
+          display: "flex", gap: 6, marginTop: 20,
+          opacity: step >= 2 ? 0.6 : 0,
+          transition: "opacity 0.8s ease 0.3s",
         }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.5s infinite" }} />
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.5s infinite 0.3s" }} />
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.5s infinite 0.6s" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite 0.2s" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite 0.4s" }} />
         </div>
-
-        <style>{`
-          @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-          }
-        `}</style>
+        <style>{`@keyframes pulse { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }`}</style>
       </div>
     );
   }
 
-  // ── HOME SCREEN — clean, white, one big button ──
+  // HOME
   return (
     <div style={{
       height: "100vh", width: "100vw",
-      background: "linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%)",
+      background: "linear-gradient(180deg, #ffffff 0%, #fafafa 100%)",
       display: "flex", flexDirection: "column",
       alignItems: "center", justifyContent: "center",
       padding: 32,
       overflow: "hidden",
     }}>
-      {/* Top logo */}
+      {/* EKIDOS top */}
       <div style={{
-        position: "absolute", top: 40, left: "50%", transform: "translateX(-50%)",
-        opacity: btnVisible ? 1 : 0,
-        transition: "opacity 0.6s ease",
+        position: "absolute", top: 48, left: "50%", transform: "translateX(-50%)",
+        opacity: step >= 4 ? 1 : 0,
+        transition: "all 0.6s ease",
       }}>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "#ef4444", letterSpacing: -0.5 }}>
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#ef4444", letterSpacing: -0.5 }}>
           EKIDOS
         </div>
       </div>
 
-      {/* Center content */}
+      {/* Center */}
       <div style={{
-        opacity: btnVisible ? 1 : 0,
-        transform: btnVisible ? "translateY(0)" : "translateY(30px)",
-        transition: "all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        opacity: step >= 4 ? 1 : 0,
+        transform: step >= 4 ? "translateY(0)" : "translateY(40px)",
+        transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s",
         display: "flex", flexDirection: "column", alignItems: "center",
-        gap: 24,
+        gap: 28,
       }}>
-        {/* Taxi icon */}
+        {/* Taxi icon - same as splash */}
         <div style={{
-          width: 80, height: 80, borderRadius: "50%",
-          background: "rgba(239,68,68,0.08)",
+          width: 100, height: 100, borderRadius: "50%",
+          background: "#fef1f1",
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 36,
+          fontSize: 48,
         }}>
           {"\u{1F696}"}
         </div>
 
-        {/* Main heading */}
+        {/* Heading */}
         <div style={{ textAlign: "center" }}>
-          <div style={{
-            fontSize: 28, fontWeight: 800, color: "#1a1a1a",
-            lineHeight: 1.2,
-          }}>
+          <div style={{ fontSize: 26, fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3 }}>
             {t("orderTaxi").replace(/\u{1F696}\s*/u, "")}
           </div>
-          <div style={{
-            fontSize: 14, color: "#888", marginTop: 8,
-          }}>
+          <div style={{ fontSize: 14, color: "#999", marginTop: 8 }}>
             {t("subtitle")}
           </div>
         </div>
@@ -135,16 +132,16 @@ export default function HomePage() {
         <button
           onClick={() => router.push("/order")}
           style={{
-            width: "100%", maxWidth: 320,
-            padding: "20px 32px",
+            width: "100%", maxWidth: 300,
+            padding: "18px 32px",
             background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
             border: "none",
-            borderRadius: 20,
+            borderRadius: 18,
             color: "#fff",
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: 700,
-            letterSpacing: 0.3,
-            boxShadow: "0 12px 40px rgba(239,68,68,0.35), 0 4px 12px rgba(0,0,0,0.1)",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            boxShadow: "0 10px 36px rgba(239,68,68,0.3), 0 4px 12px rgba(0,0,0,0.08)",
             cursor: "pointer",
             transition: "transform 0.15s, box-shadow 0.15s",
           }}
@@ -153,15 +150,16 @@ export default function HomePage() {
           onTouchStart={e => { e.currentTarget.style.transform = "scale(0.96)"; }}
           onTouchEnd={e => { e.currentTarget.style.transform = "scale(1)"; }}
         >
-          {t("orderTaxi")}
+          <span style={{ fontSize: 22 }}>{"\u{1F696}"}</span>
+          {t("orderTaxi").replace(/\u{1F696}\s*/u, "")}
         </button>
       </div>
 
-      {/* Bottom subtle branding */}
+      {/* Bottom */}
       <div style={{
         position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
-        opacity: btnVisible ? 1 : 0,
-        transition: "opacity 0.6s ease 0.3s",
+        opacity: step >= 4 ? 1 : 0,
+        transition: "opacity 0.8s ease 0.5s",
         fontSize: 12, color: "#ccc",
       }}>
         Toktogul, Kyrgyzstan
