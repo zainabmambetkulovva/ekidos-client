@@ -1,4 +1,5 @@
 ﻿"use client";
+import { t, getLang } from "./i18n";
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -65,7 +66,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: 15, color: "#fff" }}>
-                {clientInfo?.name || "Guest"}
+                {clientInfo?.name || t("guest")}
               </div>
               <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
                 {clientInfo?.email || clientInfo?.phone || ""}
@@ -82,11 +83,11 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div style={{ padding: "16px 20px", borderBottom: "1px solid #1a1a1a" }}>
           <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: -0.5 }}>
             <span style={{ color: "#ef4444" }}>Ekidos</span>
-            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Toktogul</span></div></div>{/* Menu items */}
+            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>{t("toktogul")}</span></div></div>{/* Menu items */}
         <nav style={{ flex: 1, padding: "8px 0" }}>
           {[
-            { icon: "👤", label: "Profile", path: "/profile" },
-            { icon: "⚙️", label: "Settings", path: "/settings" },
+            { icon: "👤", label: t("profile"), path: "/profile" },
+            { icon: "⚙️", label: t("settings"), path: "/settings" },
           ].map((item) => (
             <button
               key={item.path}
@@ -362,7 +363,7 @@ export default function HomePage() {
         >
           Order Taxi
         </button>
-        <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Toktogul - fast & reliable</div>
+        <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{t("subtitle")}</div>
       </div>
 
       {/* Side drawer */}
