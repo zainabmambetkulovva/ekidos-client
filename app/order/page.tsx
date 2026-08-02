@@ -183,6 +183,7 @@ export default function OrderPage() {
 
     // Driver arrived - show full driver info
     socket.on("driver:arrived", (data: any) => {
+      if (data.orderId !== orderId) return;
       setSearching(false);
       setDriver({
         name: data.driverName || "Driver",
@@ -193,6 +194,8 @@ export default function OrderPage() {
     });
 
     socket.on("order:accepted", (data: any) => {
+      // Only react if this is OUR order
+      if (data.id !== orderId && data.orderId !== orderId) return;
       setSearching(false);
       setDriver({
         name: (data.driver?.firstName || "") + " " + (data.driver?.lastName || ""),
@@ -200,6 +203,25 @@ export default function OrderPage() {
         plate: data.driver?.vehicle?.plateNumber || "",
         phone: data.driver?.phone || "",
       });
+    });
+
+    // Also listen for order:taken (has driverId, fetch driver info)
+    socket.on("order:taken", async (data: any) => {
+      if (data.orderId !== orderId) return;
+      setSearching(false);
+      // Fetch driver public info
+      try {
+        const res = await fetch(`${API_URL}/api/drivers/${data.driverId}/public`);
+        if (res.ok) {
+          const d = await res.json();
+          setDriver({
+            name: (d.firstName || "") + " " + (d.lastName || ""),
+            car: (d.vehicle?.brand || "") + " " + (d.vehicle?.model || ""),
+            plate: d.vehicle?.plateNumber || "",
+            phone: d.phone || "",
+          });
+        }
+      } catch {}
     });
 
     socket.on("order-cancelled", () => {
