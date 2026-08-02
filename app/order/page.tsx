@@ -179,6 +179,22 @@ export default function OrderPage() {
     }
   }, [fromCoords, toCoords]);
 
+  // Draw route line between A and B
+  useEffect(() => {
+    if (!fromCoords || !toCoords || !leafletMapRef.current) return;
+    const L = require("leaflet");
+    const map = leafletMapRef.current;
+    // Remove old line
+    if ((window as any).__routeLine) { map.removeLayer((window as any).__routeLine); }
+    (window as any).__routeLine = L.polyline(
+      [fromCoords, toCoords],
+      { color: "#ef4444", weight: 3, dashArray: "8,6", opacity: 0.8 }
+    ).addTo(map);
+    map.fitBounds([(window as any).__routeLine].getBounds ? (window as any).__routeLine.getBounds() : [fromCoords, toCoords], { padding: [50, 50] });
+    return () => { if ((window as any).__routeLine) { map.removeLayer((window as any).__routeLine); } };
+  }, [fromCoords, toCoords]);
+
+
   // Socket.io connection for real-time updates
   useEffect(() => {
     if (!orderId) return;
@@ -249,7 +265,7 @@ export default function OrderPage() {
       setSearching(false);
       setDriver(null);
       setOrderId(null);
-      alert("Order was cancelled");
+      alert("\u0417\u0430\u043A\u0430\u0437 \u0436\u043E\u043A\u043A\u043E \u0447\u044B\u0433\u0430\u0440\u044B\u043B\u0434\u044B");
     });
 
     return () => {
@@ -309,7 +325,7 @@ export default function OrderPage() {
     } catch (err: any) {
       console.error("Order error:", err);
       setSearching(false);
-      alert(err.message || "Failed to place order. Please try again.");
+      alert(err.message || "\u0417\u0430\u043A\u0430\u0437 \u0436\u04E9\u043D\u04E9\u0442\u04AF\u043B\u0431\u04E9\u0434\u04AF. \u041A\u0430\u0439\u0440\u0430 \u0430\u0440\u0430\u043A\u0435\u0442 \u043A\u044B\u043B\u044B\u04A3\u044B\u0437.");
     }
   };
 
@@ -325,7 +341,7 @@ export default function OrderPage() {
           leafletMapRef.current.setView(coords, 16);
         },
         () => {
-          alert("Unable to get your location");
+          alert("\u0416\u0435\u0440\u0438\u04A3\u0438\u0437\u0434\u0438 \u0430\u043D\u044B\u043A\u0442\u043E\u043E \u043C\u04AF\u043C\u043A\u04AF\u043D \u044D\u043C\u0435\u0441");
         }
       );
     }
