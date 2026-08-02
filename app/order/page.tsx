@@ -317,13 +317,38 @@ export default function OrderPage() {
         }}
       />
 
-      {/* Back Button */}
+      {/* Burger Menu Button */}
       <button
-        onClick={() => router.back()}
+        onClick={() => router.push("/settings")}
         style={{
           position: "absolute",
           top: 16,
           left: 16,
+          zIndex: 200,
+          width: 44,
+          height: 44,
+          borderRadius: "50%",
+          background: "white",
+          border: "none",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          fontSize: 18,
+        }}
+        aria-label="Menu"
+      >
+        &#9776;
+      </button>
+
+      {/* Back to home */}
+      <button
+        onClick={() => router.push("/")}
+        style={{
+          position: "absolute",
+          top: 16,
+          left: 68,
           zIndex: 200,
           width: 44,
           height: 44,
