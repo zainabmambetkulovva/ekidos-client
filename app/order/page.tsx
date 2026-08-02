@@ -9,6 +9,26 @@ const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://ekidos-taxi-production-587e.up.railway.app";
 
+// Reverse geocode: coords -> street name
+async function reverseGeocode(lat: number, lng: number): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ru`,
+      { headers: { "User-Agent": "ekidos-client/1.0" } }
+    );
+    const data = await res.json();
+    // Extract short address (street + house or first 2 parts)
+    const addr = data.address;
+    if (addr) {
+      const parts = [addr.road, addr.house_number, addr.neighbourhood, addr.suburb].filter(Boolean);
+      if (parts.length > 0) return parts.slice(0, 2).join(", ");
+    }
+    return data.display_name?.split(",").slice(0, 2).join(",").trim() || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  } catch {
+    return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  }
+}
+
 export default function OrderPage() {
   const router = useRouter();
   const mapRef = useRef<HTMLDivElement>(null);
@@ -116,7 +136,8 @@ export default function OrderPage() {
         }).addTo(map);
         markersRef.current.from = marker;
         setFromCoords([lat, lng]);
-        setFromAddress(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+        // Reverse geocode to get street name
+        reverseGeocode(lat, lng).then(addr => setFromAddress(addr));
       } else if (current === "to") {
         if (markersRef.current.to) {
           map.removeLayer(markersRef.current.to);
@@ -131,7 +152,7 @@ export default function OrderPage() {
         }).addTo(map);
         markersRef.current.to = marker;
         setToCoords([lat, lng]);
-        setToAddress(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+        reverseGeocode(lat, lng).then(addr => setToAddress(addr));
       }
 
       return null; // Reset picking state
