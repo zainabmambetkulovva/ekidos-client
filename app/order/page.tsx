@@ -140,7 +140,14 @@ function OrderMap({
       onMapClickRef.current({ lat: e.latlng.lat, lng: e.latlng.lng });
     });
 
-    return () => { map.remove(); mapRef.current = null; };
+    // Listen for centerMap event from location button
+    const handleCenter = (e: Event) => {
+      const { lat, lng } = (e as CustomEvent).detail;
+      map.setView([lat, lng], 16);
+    };
+    window.addEventListener('centerMap', handleCenter);
+
+    return () => { window.removeEventListener('centerMap', handleCenter); map.remove(); mapRef.current = null; };
   }, []);
 
   // Update markers & route line
@@ -419,7 +426,7 @@ export default function OrderPage() {
           });
         }}
         style={{
-          position: "absolute", bottom: sheetExpanded ? "calc(50vh + 16px)" : "96px",
+          position: "absolute", bottom: sheetExpanded ? "calc(45% + 16px)" : "96px",
           right: 16, zIndex: 150,
           width: 44, height: 44,
           background: "#fff",
@@ -442,9 +449,9 @@ export default function OrderPage() {
         background: "#111",
         borderRadius: "20px 20px 0 0",
         boxShadow: "0 -8px 40px rgba(0,0,0,0.6)",
-        maxHeight: sheetExpanded ? "50vh" : "80px",
+        maxHeight: sheetExpanded ? "45%" : "80px",
+        overflow: sheetExpanded ? "auto" : "hidden",
         transition: "max-height 0.3s cubic-bezier(0.4,0,0.2,1)",
-        overflow: "hidden",
       }}>
         {/* Drag handle */}
         <div

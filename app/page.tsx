@@ -215,7 +215,12 @@ function HomeMap({ onReady }: { onReady: (mapRef: React.MutableRefObject<unknown
     fetchDrivers();
     const interval = setInterval(fetchDrivers, 15000);
 
+    // Listen for centerMap event
+    const handleCenter = (ev) => { const {lat, lng} = ev.detail; map.setView([lat, lng], 16); };
+    window.addEventListener('centerMap', handleCenter);
+
     return () => {
+      window.removeEventListener('centerMap', handleCenter);
       clearInterval(interval);
       map.remove();
       mapRef.current = null;
