@@ -75,9 +75,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
           <button
             onClick={onClose}
             style={{ background: "none", border: "none", color: "#888", fontSize: 22, padding: 4, lineHeight: 1 }}
-          >
-            âœ•
-          </button>
+          >☰</button>
         </div>
 
         {/* Logo strip */}
@@ -87,8 +85,8 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Toktogul</span></div></div>{/* Menu items */}
         <nav style={{ flex: 1, padding: "8px 0" }}>
           {[
-            { icon: "ðŸ‘¤", label: "Profile", path: "/profile" },
-            { icon: "âš™ï¸", label: "Settings", path: "/settings" },
+            { icon: "👤", label: "Profile", path: "/profile" },
+            { icon: "⚙️", label: "Settings", path: "/settings" },
           ].map((item) => (
             <button
               key={item.path}
@@ -293,11 +291,7 @@ export default function HomePage() {
           backdropFilter: "blur(8px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
         }}
-        aria-label="Open menu"
-      >
-        â˜°
-      </button>
-
+        aria-label="Open menu">☰</button>
       {/* App title */}
       <div style={{
         position: "absolute", top: 20, left: "50%", transform: "translateX(-50%)",
@@ -343,7 +337,7 @@ export default function HomePage() {
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
-          Order Taxi Order Taxi Order Taxi
+          Order Taxi
         </button>
         <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Toktogul - fast & reliable</div>
       </div>
