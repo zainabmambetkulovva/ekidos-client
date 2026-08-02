@@ -152,7 +152,8 @@ export default function OrderPage() {
           Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c; // km
-      const calculatedPrice = Math.round(5000 + distance * 3000); // base + per km
+      const roadDistance = distance * 1.4; // road is ~1.4x straight line
+      const calculatedPrice = Math.round(50 + roadDistance * 30); // 50 som base + 30 som/km
       setPrice(calculatedPrice);
     }
   }, [fromCoords, toCoords]);
@@ -180,6 +181,27 @@ export default function OrderPage() {
       });
     });
 
+    // Driver arrived - show full driver info
+    socket.on("driver:arrived", (data: any) => {
+      setSearching(false);
+      setDriver({
+        name: data.driverName || "Driver",
+        car: data.car || "",
+        plate: data.plate || "",
+        phone: data.phone || "",
+      });
+    });
+
+    socket.on("order:accepted", (data: any) => {
+      setSearching(false);
+      setDriver({
+        name: (data.driver?.firstName || "") + " " + (data.driver?.lastName || ""),
+        car: (data.driver?.vehicle?.brand || "") + " " + (data.driver?.vehicle?.model || ""),
+        plate: data.driver?.vehicle?.plateNumber || "",
+        phone: data.driver?.phone || "",
+      });
+    });
+
     socket.on("order-cancelled", () => {
       setSearching(false);
       setDriver(null);
@@ -194,32 +216,57 @@ export default function OrderPage() {
   }, [orderId]);
 
   const handleOrder = async () => {
-    if (!fromCoords || !toCoords) return;
+    if (!fromCoords) return;
 
     setSearching(true);
     setDriver(null);
 
+    // Get client info from localStorage
+    let clientName = "Client";
+    let clientPhone = "-";
     try {
+      const raw = localStorage.getItem("clientInfo");
+      if (raw) {
+        const info = JSON.parse(raw);
+        clientName = info.name || info.email || "Client";
+        clientPhone = info.phone || info.email || "-";
+      }
+    } catch {}
+
+    try {
+      const token = localStorage.getItem("client-token");
       const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
-          from: { lat: fromCoords[0], lng: fromCoords[1], address: fromAddress },
-          to: { lat: toCoords[0], lng: toCoords[1], address: toAddress },
-          price,
+          pickupAddress: fromAddress || `${fromCoords[0].toFixed(5)}, ${fromCoords[1].toFixed(5)}`,
+          destAddress: toAddress || (toCoords ? `${toCoords[0].toFixed(5)}, ${toCoords[1].toFixed(5)}` : "Not specified"),
+          pickupLat: fromCoords[0],
+          pickupLng: fromCoords[1],
+          destLat: toCoords?.[0] || null,
+          destLng: toCoords?.[1] || null,
+          clientName,
+          clientPhone,
+          tariff: "Standard",
+          paymentMethod: "CASH",
+          price: price || 0,
         }),
       });
 
       if (!res.ok) {
-        throw new Error("Failed to create order");
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Failed to create order");
       }
 
       const data = await res.json();
       setOrderId(data.id || data.orderId || data._id);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Order error:", err);
       setSearching(false);
-      alert("Failed to place order. Please try again.");
+      alert(err.message || "Failed to place order. Please try again.");
     }
   };
 
@@ -485,27 +532,27 @@ export default function OrderPage() {
               padding: "4px 0",
             }}
           >
-            {price.toLocaleString()} sum
+            {price.toLocaleString()} som
           </div>
         )}
 
         {/* Order Button */}
         <button
           onClick={handleOrder}
-          disabled={!fromCoords || !toCoords || searching}
+          disabled={!fromCoords || searching}
           style={{
             width: "100%",
             padding: "14px",
             borderRadius: 12,
             border: "none",
             background:
-              fromCoords && toCoords && !searching
-                ? "linear-gradient(135deg, #facc15, #f59e0b)"
+              fromCoords && !searching
+                ? "linear-gradient(135deg, #ef4444, #dc2626)"
                 : "rgba(255,255,255,0.15)",
-            color: fromCoords && toCoords ? "#000" : "rgba(255,255,255,0.4)",
+            color: fromCoords ? "#fff" : "rgba(255,255,255,0.4)",
             fontSize: 16,
             fontWeight: 700,
-            cursor: fromCoords && toCoords && !searching ? "pointer" : "not-allowed",
+            cursor: fromCoords && !searching ? "pointer" : "not-allowed",
             transition: "all 0.2s",
           }}
         >
