@@ -367,7 +367,7 @@ export default function OrderPage() {
 
   if (!mounted) return null;
 
-  const sheetHeight = sheetExpanded ? 320 : 80;
+  const sheetHeight = sheetExpanded ? "auto" : 80;
 
   return (
     <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden", background: "#0a0a0a" }}>
@@ -385,17 +385,17 @@ export default function OrderPage() {
       <button
         onClick={() => router.push("/")}
         style={{
-          position: "absolute", top: 16, left: 16, zIndex: 20,
+          position: "absolute", top: 16, left: 16, zIndex: 200,
           width: 44, height: 44,
           background: "rgba(17,17,17,0.92)",
           border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: 12,
+          borderRadius: "50%",
           color: "#fff", fontSize: 20,
           display: "flex", alignItems: "center", justifyContent: "center",
           backdropFilter: "blur(8px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
         }}
-        aria-label="Назад"
+        aria-label="Back"
       >
         ←
       </button>
@@ -409,14 +409,41 @@ export default function OrderPage() {
         Новый заказ
       </div>
 
+      {/* Location button - center on user */}
+      <button
+        onClick={() => {
+          navigator.geolocation?.getCurrentPosition((pos) => {
+            const { latitude, longitude } = pos.coords;
+            // Dispatch event to map - but since map is in separate component, we use a simple approach
+            window.dispatchEvent(new CustomEvent('centerMap', { detail: { lat: latitude, lng: longitude } }));
+          });
+        }}
+        style={{
+          position: "absolute", bottom: sheetExpanded ? "calc(50vh + 16px)" : "96px",
+          right: 16, zIndex: 150,
+          width: 44, height: 44,
+          background: "#fff",
+          border: "none",
+          borderRadius: "50%",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
+          transition: "bottom 0.3s",
+        }}
+        aria-label="My location"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e53935" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12,2 19,21 12,17 5,21" />
+        </svg>
+      </button>
+
       {/* Bottom Sheet */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 100,
         background: "#111",
         borderRadius: "20px 20px 0 0",
         boxShadow: "0 -8px 40px rgba(0,0,0,0.6)",
-        height: sheetHeight,
-        transition: "height 0.3s cubic-bezier(0.4,0,0.2,1)",
+        maxHeight: sheetExpanded ? "50vh" : "80px",
+        transition: "max-height 0.3s cubic-bezier(0.4,0,0.2,1)",
         overflow: "hidden",
       }}>
         {/* Drag handle */}
