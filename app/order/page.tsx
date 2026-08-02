@@ -7,7 +7,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://ekidos-taxi-producti
 
 interface LatLng { lat: number; lng: number; label?: string }
 interface PriceInfo { price: number; distance: number; currency?: string }
-interface DriverInfo { name: string; car?: string; rating?: number; phone?: string }
 
 // Reverse geocode using Nominatim
 async function reverseGeocode(lat: number, lng: number): Promise<string> {
@@ -31,60 +30,6 @@ function haversineKm(a: LatLng, b: LatLng): number {
   const x = Math.sin(dLat / 2) ** 2 +
     Math.cos((a.lat * Math.PI) / 180) * Math.cos((b.lat * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
-}
-
-// ---- Driver info card ----
-function DriverCard({ driver, onClose }: { driver: DriverInfo; onClose: () => void }) {
-  return (
-    <div style={{
-      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 200,
-      background: "#111", borderRadius: "20px 20px 0 0",
-      padding: "20px 20px 36px",
-      boxShadow: "0 -8px 40px rgba(0,0,0,0.6)",
-      animation: "slideUp 0.3s ease",
-    }}>
-      <style>{`@keyframes slideUp { from { transform: translateY(100%) } to { transform: translateY(0) } }`}</style>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-        <div>
-          <div style={{ fontSize: 13, color: "#888", marginBottom: 4 }}>Водитель найден</div>
-          <div style={{ fontSize: 20, fontWeight: 700 }}>🚗 {driver.name}</div>
-        </div>
-        <button onClick={onClose} style={{ background: "none", border: "none", color: "#888", fontSize: 22 }}>✕</button>
-      </div>
-
-      <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-        <div style={{ flex: 1, background: "#1a1a1a", borderRadius: 12, padding: "12px 16px" }}>
-          <div style={{ fontSize: 11, color: "#666", marginBottom: 4 }}>Автомобиль</div>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>{driver.car || "—"}</div>
-        </div>
-        <div style={{ flex: 1, background: "#1a1a1a", borderRadius: 12, padding: "12px 16px" }}>
-          <div style={{ fontSize: 11, color: "#666", marginBottom: 4 }}>Рейтинг</div>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>
-            {"⭐".repeat(Math.round(driver.rating || 5))} {driver.rating?.toFixed(1) || "5.0"}
-          </div>
-        </div>
-      </div>
-
-      {driver.phone && (
-        <a
-          href={`tel:${driver.phone}`}
-          style={{
-            display: "block", width: "100%", padding: "14px",
-            background: "#1a3a1a", border: "1px solid #166534",
-            borderRadius: 12, color: "#4ade80",
-            fontSize: 15, fontWeight: 600, textAlign: "center",
-            textDecoration: "none",
-          }}
-        >
-          📞 Позвонить водителю
-        </a>
-      )}
-
-      <div style={{ marginTop: 12, textAlign: "center", color: "#888", fontSize: 13 }}>
-        Водитель едет к вам...
-      </div>
-    </div>
-  );
 }
 
 // ---- Order Map ----
@@ -254,7 +199,7 @@ export default function OrderPage() {
   const [priceInfo, setPriceInfo] = useState<PriceInfo | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
   const [ordering, setOrdering] = useState(false);
-  const [driver, setDriver] = useState<DriverInfo | null>(null);
+  const [orderSent, setOrderSent] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sheetExpanded, setSheetExpanded] = useState(true);
 
@@ -357,16 +302,14 @@ export default function OrderPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setDriver(data.driver || { name: "Водитель найден", car: "Ожидайте", rating: 5.0 });
+        setOrderSent(true);
         setSheetExpanded(false);
       } else {
         const err = await res.json().catch(() => ({}));
-        alert(err.error || "Не удалось создать заказ. Попробуйте снова.");
+        alert(err.error || "Error creating order");
       }
     } catch {
-      // Demo fallback — show success anyway
-      setDriver({ name: "Водитель найден", car: "Ожидайте звонка", rating: 5.0 });
-      setSheetExpanded(false);
+      alert("Network error. Please try again.");
     } finally {
       setOrdering(false);
     }
@@ -576,8 +519,44 @@ export default function OrderPage() {
         )}
       </div>
 
-      {/* Driver card */}
-      {driver && <DriverCard driver={driver} onClose={() => { setDriver(null); router.push("/"); }} />}
+      {/* Order sent confirmation */}
+      {orderSent && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 300,
+          background: "rgba(0,0,0,0.85)",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          padding: 32, gap: 16,
+          animation: "fadeIn 0.3s ease",
+        }}>
+          <style>{`@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
+          <div style={{ fontSize: 56 }}>{"\u{1F696}"}</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: "#fff", textAlign: "center" }}>
+            Order sent!
+          </div>
+          <div style={{ fontSize: 14, color: "#888", textAlign: "center", maxWidth: 280 }}>
+            Your order has been sent to dispatchers and drivers. Please wait for a call.
+          </div>
+          <div style={{
+            marginTop: 8, padding: "8px 20px",
+            background: "rgba(74,222,128,0.15)", border: "1px solid rgba(74,222,128,0.3)",
+            borderRadius: 12, color: "#4ade80", fontSize: 13, fontWeight: 600,
+          }}>
+            Dispatchers will call you
+          </div>
+          <button
+            onClick={() => { setOrderSent(false); router.push("/"); }}
+            style={{
+              marginTop: 16, padding: "14px 40px",
+              background: "#ef4444", border: "none", borderRadius: 14,
+              color: "#fff", fontSize: 16, fontWeight: 600,
+              boxShadow: "0 4px 16px rgba(239,68,68,0.3)",
+            }}
+          >
+            OK
+          </button>
+        </div>
+      )}
     </div>
   );
 }
