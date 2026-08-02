@@ -310,7 +310,7 @@ export default function HomePage() {
 
       {/* Order button */}
       <div style={{
-        position: "absolute", bottom: 40, left: "50%", zIndex: 100,, transform: "translateX(-50%)",
+        position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)",
         zIndex: 20, width: "calc(100% - 32px)", maxWidth: 380,
       }}>
         <button
