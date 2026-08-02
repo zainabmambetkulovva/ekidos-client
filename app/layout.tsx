@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
+        <meta charSet="utf-8" />
         <link
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
