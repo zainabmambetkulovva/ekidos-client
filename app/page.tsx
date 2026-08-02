@@ -65,7 +65,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: 15, color: "#fff" }}>
-                {clientInfo?.name || "Ð“Ð¾ÑÑ‚ÑŒ"}
+                {clientInfo?.name || "Guest"}
               </div>
               <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
                 {clientInfo?.email || clientInfo?.phone || ""}
@@ -84,15 +84,11 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div style={{ padding: "16px 20px", borderBottom: "1px solid #1a1a1a" }}>
           <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: -0.5 }}>
             <span style={{ color: "#ef4444" }}>Ekidos</span>
-            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Ð¢Ð¾ÐºÑ‚Ð¾Ð³ÑƒÐ»</span>
-          </div>
-        </div>
-
-        {/* Menu items */}
+            <span style={{ color: "#fff", fontSize: 13, fontWeight: 400, marginLeft: 8 }}>Toktogul</span></div></div>{/* Menu items */}
         <nav style={{ flex: 1, padding: "8px 0" }}>
           {[
-            { icon: "ðŸ‘¤", label: "ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ", path: "/profile" },
-            { icon: "âš™ï¸", label: "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸", path: "/settings" },
+            { icon: "ðŸ‘¤", label: "Profile", path: "/profile" },
+            { icon: "âš™ï¸", label: "Settings", path: "/settings" },
           ].map((item) => (
             <button
               key={item.path}
@@ -129,7 +125,7 @@ function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
               fontSize: 14, fontWeight: 600,
             }}
           >
-            Ð’Ñ‹Ð¹Ñ‚Ð¸
+            Logout
           </button>
         </div>
       </div>
@@ -297,7 +293,7 @@ export default function HomePage() {
           backdropFilter: "blur(8px)",
           boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
         }}
-        aria-label="ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¼ÐµÐ½ÑŽ"
+        aria-label="Open menu"
       >
         â˜°
       </button>
@@ -347,11 +343,9 @@ export default function HomePage() {
             e.currentTarget.style.transform = "scale(1)";
           }}
         >
-          ðŸš– Ð—Ð°ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ñ‚Ð°ÐºÑÐ¸
+          Order Taxi Order Taxi Order Taxi
         </button>
-        <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
-          Ð¢Ð¾ÐºÑ‚Ð¾Ð³ÑƒÐ» â€” Ð±Ñ‹ÑÑ‚Ñ€Ð¾ Ð¸ Ð½Ð°Ð´Ñ‘Ð¶Ð½Ð¾
-        </div>
+        <div style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Toktogul - fast & reliable</div>
       </div>
 
       {/* Side drawer */}
