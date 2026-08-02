@@ -302,6 +302,29 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Location button */}
+      <button
+        onClick={() => {
+          navigator.geolocation?.getCurrentPosition((pos) => {
+            window.dispatchEvent(new CustomEvent('centerMap', { detail: { lat: pos.coords.latitude, lng: pos.coords.longitude } }));
+          });
+        }}
+        style={{
+          position: "absolute", bottom: 110, right: 16, zIndex: 20,
+          width: 44, height: 44,
+          background: "#fff",
+          border: "none",
+          borderRadius: "50%",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
+        }}
+        aria-label="My location"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e53935" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12,2 19,21 12,17 5,21" />
+        </svg>
+      </button>
+
       {/* Order button */}
       <div style={{
         position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)",
