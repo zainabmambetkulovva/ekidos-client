@@ -180,7 +180,7 @@ function HomeMap({ onReady }: { onReady: (mapRef: React.MutableRefObject<unknown
     // Driver polling
     const fetchDrivers = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/orders/available`);
+        const res = await fetch(`${API_URL}/api/orders/online-drivers`);
         if (!res.ok) return;
         const data = await res.json();
         const drivers: Array<{ id: string; lat: number; lng: number; name?: string }> = Array.isArray(data) ? data : data.drivers || [];
