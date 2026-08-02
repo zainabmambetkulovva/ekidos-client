@@ -174,7 +174,7 @@ export default function OrderPage() {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c; // km
       const roadDistance = distance * 1.4; // road is ~1.4x straight line
-      const calculatedPrice = Math.round(50 + roadDistance * 30); // 50 som base + 30 som/km
+      const calculatedPrice = Math.round(50 + roadDistance * 30); // 50 сом base + 30 som/km
       setPrice(calculatedPrice);
     }
   }, [fromCoords, toCoords]);
@@ -426,7 +426,7 @@ export default function OrderPage() {
             fontWeight: 500,
           }}
         >
-          Tap on map to select {pickingPoint === "from" ? "pickup" : "destination"} point
+          {pickingPoint === "from" ? "Алуу чекитин тандаңыз" : "Жеткирүү чекитин тандаңыз"}
         </div>
       )}
 
@@ -496,7 +496,7 @@ export default function OrderPage() {
           </div>
           <input
             type="text"
-            placeholder="Pickup location"
+            placeholder="Кайдан (A)"
             value={fromAddress}
             onChange={(e) => setFromAddress(e.target.value)}
             style={{
@@ -553,7 +553,7 @@ export default function OrderPage() {
           </div>
           <input
             type="text"
-            placeholder="Destination"
+            placeholder="Кайда (B)"
             value={toAddress}
             onChange={(e) => setToAddress(e.target.value)}
             style={{
@@ -624,7 +624,7 @@ export default function OrderPage() {
             transition: "all 0.2s",
           }}
         >
-          Order Taxi
+          Заказ берүү
         </button>
       </div>
 
@@ -655,7 +655,7 @@ export default function OrderPage() {
             }}
           />
           <p style={{ color: "white", fontSize: 18, fontWeight: 600 }}>
-            Searching for driver...
+            Айдоочу издөөдө...
           </p>
           <button
             onClick={cancelSearch}
@@ -708,24 +708,24 @@ export default function OrderPage() {
               textAlign: "center",
             }}
           >
-            Driver is on the way!
+            Айдоочу жолдо!
           </h3>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ display: "flex", justifyContent: "space-between", color: "white" }}>
-              <span style={{ opacity: 0.7, fontSize: 14 }}>Name</span>
+              <span style={{ opacity: 0.7, fontSize: 14 }}>Аты</span>
               <span style={{ fontWeight: 600, fontSize: 14 }}>{driver.name}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", color: "white" }}>
-              <span style={{ opacity: 0.7, fontSize: 14 }}>Car</span>
+              <span style={{ opacity: 0.7, fontSize: 14 }}>Унаа</span>
               <span style={{ fontWeight: 600, fontSize: 14 }}>{driver.car}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", color: "white" }}>
-              <span style={{ opacity: 0.7, fontSize: 14 }}>Plate</span>
+              <span style={{ opacity: 0.7, fontSize: 14 }}>Номери</span>
               <span style={{ fontWeight: 600, fontSize: 14 }}>{driver.plate}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", color: "white" }}>
-              <span style={{ opacity: 0.7, fontSize: 14 }}>Phone</span>
+              <span style={{ opacity: 0.7, fontSize: 14 }}>Телефон</span>
               <a
                 href={`tel:${driver.phone}`}
                 style={{ fontWeight: 600, fontSize: 14, color: "#facc15", textDecoration: "none" }}
