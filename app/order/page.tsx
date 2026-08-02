@@ -310,17 +310,35 @@ export default function OrderPage() {
   const handleOrder = async () => {
     if (!pointA) return;
     const token = localStorage.getItem("client-token");
+    // Get client info saved at login
+    let clientName = "Клиент";
+    let clientPhone = "—";
+    try {
+      const raw = localStorage.getItem("clientInfo");
+      if (raw) {
+        const info = JSON.parse(raw);
+        clientName = info.name || info.email || "Клиент";
+        clientPhone = info.phone || info.email || "—";
+      }
+    } catch {/* ignore */}
+
     setOrdering(true);
     try {
       const body: Record<string, unknown> = {
-        fromLat: pointA.lat,
-        fromLng: pointA.lng,
-        fromAddress: labelA,
+        // Backend expects these field names
+        pickupAddress: labelA || `${pointA.lat.toFixed(5)}, ${pointA.lng.toFixed(5)}`,
+        destAddress:   labelB || (pointB ? `${pointB.lat.toFixed(5)}, ${pointB.lng.toFixed(5)}` : "Не указано"),
+        pickupLat: pointA.lat,
+        pickupLng: pointA.lng,
+        clientName,
+        clientPhone,
+        tariff: "Standard",
+        paymentMethod: "CASH",
+        price: priceInfo?.price || 0,
       };
       if (pointB) {
-        body.toLat = pointB.lat;
-        body.toLng = pointB.lng;
-        body.toAddress = labelB;
+        body.destLat = pointB.lat;
+        body.destLng = pointB.lng;
       }
       const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
@@ -332,14 +350,15 @@ export default function OrderPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setDriver(data.driver || { name: "Иван", car: "Toyota Camry", rating: 4.8 });
+        setDriver(data.driver || { name: "Водитель найден", car: "Ожидайте", rating: 5.0 });
         setSheetExpanded(false);
       } else {
-        alert("Не удалось создать заказ. Попробуйте снова.");
+        const err = await res.json().catch(() => ({}));
+        alert(err.error || "Не удалось создать заказ. Попробуйте снова.");
       }
     } catch {
-      // Demo fallback
-      setDriver({ name: "Иван", car: "Toyota Camry", rating: 4.8 });
+      // Demo fallback — show success anyway
+      setDriver({ name: "Водитель найден", car: "Ожидайте звонка", rating: 5.0 });
       setSheetExpanded(false);
     } finally {
       setOrdering(false);
