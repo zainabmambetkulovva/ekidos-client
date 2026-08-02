@@ -419,7 +419,7 @@ export default function OrderPage() {
                   placeholder="Введите адрес или нажмите на карту"
                   style={{
                     flex: 1, padding: "11px 12px",
-                    background: "#1a1a1a", border: selectingPoint === "A" ? "1px solid #ef4444" : "1px solid #2a2a2a",
+                    background: "rgba(30,30,30,0.9)", border: selectingPoint === "A" ? "1px solid #ef4444" : "1px solid #2a2a2a",
                     borderRadius: 10, color: "#fff", fontSize: 14, outline: "none",
                   }}
                 />
@@ -448,7 +448,7 @@ export default function OrderPage() {
                   placeholder="Введите адрес назначения"
                   style={{
                     flex: 1, padding: "11px 12px",
-                    background: "#1a1a1a", border: selectingPoint === "B" ? "1px solid #10b981" : "1px solid #2a2a2a",
+                    background: "rgba(30,30,30,0.9)", border: selectingPoint === "B" ? "1px solid #10b981" : "1px solid #2a2a2a",
                     borderRadius: 10, color: "#fff", fontSize: 14, outline: "none",
                   }}
                 />
@@ -472,7 +472,7 @@ export default function OrderPage() {
               <div style={{
                 display: "flex", gap: 10, marginBottom: 14,
               }}>
-                <div style={{ flex: 1, background: "#1a1a1a", borderRadius: 10, padding: "10px 12px" }}>
+                <div style={{ flex: 1, background: "rgba(30,30,30,0.9)", borderRadius: 10, padding: "10px 12px" }}>
                   <div style={{ fontSize: 11, color: "#666", marginBottom: 2 }}>Расстояние</div>
                   <div style={{ fontSize: 15, fontWeight: 700 }}>
                     {loadingPrice ? "..." : `${priceInfo?.distance?.toFixed(1) || "?"} км`}
@@ -565,12 +565,12 @@ export default function OrderPage() {
             </div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {assignedDriver.car && (
-                <div style={{ background: "#1a1a1a", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#ccc" }}>
+                <div style={{ background: "rgba(30,30,30,0.9)", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#ccc" }}>
                   {"🚗"} {assignedDriver.car}
                 </div>
               )}
               {assignedDriver.plate && (
-                <div style={{ background: "#1a1a1a", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#fff", fontWeight: 700 }}>
+                <div style={{ background: "rgba(30,30,30,0.9)", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#fff", fontWeight: 700 }}>
                   {assignedDriver.plate}
                 </div>
               )}
@@ -1021,7 +1021,7 @@ export default function OrderPage() {
                   placeholder="Введите адрес или нажмите на карту"
                   style={{
                     flex: 1, padding: "11px 12px",
-                    background: "#1a1a1a", border: selectingPoint === "A" ? "1px solid #ef4444" : "1px solid #2a2a2a",
+                    background: "rgba(30,30,30,0.9)", border: selectingPoint === "A" ? "1px solid #ef4444" : "1px solid #2a2a2a",
                     borderRadius: 10, color: "#fff", fontSize: 14, outline: "none",
                   }}
                 />
@@ -1050,7 +1050,7 @@ export default function OrderPage() {
                   placeholder="Введите адрес назначения"
                   style={{
                     flex: 1, padding: "11px 12px",
-                    background: "#1a1a1a", border: selectingPoint === "B" ? "1px solid #10b981" : "1px solid #2a2a2a",
+                    background: "rgba(30,30,30,0.9)", border: selectingPoint === "B" ? "1px solid #10b981" : "1px solid #2a2a2a",
                     borderRadius: 10, color: "#fff", fontSize: 14, outline: "none",
                   }}
                 />
@@ -1074,7 +1074,7 @@ export default function OrderPage() {
               <div style={{
                 display: "flex", gap: 10, marginBottom: 14,
               }}>
-                <div style={{ flex: 1, background: "#1a1a1a", borderRadius: 10, padding: "10px 12px" }}>
+                <div style={{ flex: 1, background: "rgba(30,30,30,0.9)", borderRadius: 10, padding: "10px 12px" }}>
                   <div style={{ fontSize: 11, color: "#666", marginBottom: 2 }}>Расстояние</div>
                   <div style={{ fontSize: 15, fontWeight: 700 }}>
                     {loadingPrice ? "..." : `${priceInfo?.distance?.toFixed(1) || "?"} км`}
