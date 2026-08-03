@@ -21,8 +21,9 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icon-192.svg" />
-        <link rel="icon" type="image/svg+xml" href="/icon-192.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
