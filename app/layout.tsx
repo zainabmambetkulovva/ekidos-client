@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Ekidos — Такси Токтогул",
-  description: "Такси сервис в городе Токтогул, Кыргызстан",
+  title: "EKIDOS",
+  description: "Такси сервис — Токтогул",
 };
 
 export const viewport: Viewport = {
@@ -20,6 +20,9 @@ export default function RootLayout({
     <html lang="ru">
       <head>
         <meta charSet="utf-8" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+        <link rel="icon" type="image/svg+xml" href="/icon-192.svg" />
         <link
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -27,6 +30,9 @@ export default function RootLayout({
           crossOrigin=""
         />
         <meta name="theme-color" content="#0a0a0a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="EKIDOS" />
         <style>{`
           * { box-sizing: border-box; margin: 0; padding: 0; }
           html, body { height: 100%; overflow: hidden; background: #0a0a0a; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
