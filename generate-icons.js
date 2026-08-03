@@ -3,28 +3,43 @@ const fs = require('fs');
 const path = require('path');
 
 const iconSVG = `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="0" fill="#FDE8EC"/>
+  <rect width="512" height="512" rx="100" fill="#FDE8EC"/>
   <circle cx="256" cy="256" r="190" fill="#FACDD5"/>
+  
+  <!-- White taxi car - side view like admin/driver icon -->
   <g transform="translate(256, 265)">
-    <rect x="-80" y="-20" width="160" height="60" rx="12" fill="#F5C518"/>
-    <path d="M-46,-20 L-34,-55 L34,-55 L46,-20 Z" fill="#F5C518"/>
-    <path d="M-38,-17 L-28,-48 L28,-48 L38,-17 Z" fill="#A8DEF0"/>
-    <rect x="-18" y="-67" width="36" height="14" rx="3" fill="#6B3A1F"/>
-    <text x="0" y="-55" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#E5A800">TAXI</text>
-    <g transform="translate(-12, 3)">
-      <rect x="0" y="0" width="6" height="6" fill="#3D2B1F"/>
-      <rect x="6" y="0" width="6" height="6" fill="#F5C518"/>
-      <rect x="12" y="0" width="6" height="6" fill="#3D2B1F"/>
-      <rect x="18" y="0" width="6" height="6" fill="#F5C518"/>
-    </g>
-    <ellipse cx="-62" cy="5" rx="11" ry="9" fill="#FFE066"/>
-    <ellipse cx="62" cy="5" rx="11" ry="9" fill="#FFE066"/>
-    <rect x="-45" y="24" width="90" height="14" rx="6" fill="#555"/>
-    <rect x="-70" y="36" width="140" height="6" rx="3" fill="#D4A800"/>
-    <ellipse cx="-55" cy="44" r="15" fill="#333"/>
-    <ellipse cx="-55" cy="44" r="8" fill="#666"/>
-    <ellipse cx="55" cy="44" r="15" fill="#333"/>
-    <ellipse cx="55" cy="44" r="8" fill="#666"/>
+    <!-- Car body - white -->
+    <rect x="-120" y="-30" width="240" height="70" rx="15" fill="#FFFFFF"/>
+    
+    <!-- Car roof -->
+    <path d="M-50,-30 L-30,-70 L70,-70 L90,-30 Z" fill="#FFFFFF"/>
+    
+    <!-- Windows (red tint like admin icon) -->
+    <path d="M-40,-28 L-25,-62 L20,-62 L20,-28 Z" fill="#E85555"/>
+    <path d="M25,-28 L25,-62 L62,-62 L80,-28 Z" fill="#E85555"/>
+    
+    <!-- TAXI sign on top -->
+    <rect x="-5" y="-82" width="50" height="16" rx="3" fill="#F5C518"/>
+    <text x="20" y="-70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">TAXI</text>
+    
+    <!-- Door line -->
+    <line x1="22" y1="-28" x2="22" y2="35" stroke="#ddd" stroke-width="1.5"/>
+    
+    <!-- Wheels -->
+    <circle cx="-70" cy="45" r="22" fill="#333"/>
+    <circle cx="-70" cy="45" r="12" fill="#666"/>
+    <circle cx="-70" cy="45" r="5" fill="#999"/>
+    <circle cx="80" cy="45" r="22" fill="#333"/>
+    <circle cx="80" cy="45" r="12" fill="#666"/>
+    <circle cx="80" cy="45" r="5" fill="#999"/>
+    
+    <!-- Headlight -->
+    <ellipse cx="120" cy="10" rx="5" ry="10" fill="#FFE066"/>
+    <!-- Taillight -->
+    <ellipse cx="-120" cy="10" rx="4" ry="8" fill="#E85555"/>
+    
+    <!-- EKIDOS text -->
+    <text x="0" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E85555">EKIDOS</text>
   </g>
 </svg>`;
 
