@@ -190,7 +190,7 @@ export default function OrderPage() {
       [fromCoords, toCoords],
       { color: "#ef4444", weight: 3, dashArray: "8,6", opacity: 0.8 }
     ).addTo(map);
-    map.fitBounds([(window as any).__routeLine].getBounds ? (window as any).__routeLine.getBounds() : [fromCoords, toCoords], { padding: [50, 50] });
+    map.fitBounds((window as any).__routeLine.getBounds ? (window as any).__routeLine.getBounds() : [fromCoords, toCoords], { padding: [50, 50] });
     return () => { if ((window as any).__routeLine) { map.removeLayer((window as any).__routeLine); } };
   }, [fromCoords, toCoords]);
 
