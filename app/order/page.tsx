@@ -36,6 +36,10 @@ export default function OrderPage() {
   const markersRef = useRef<{ from: any; to: any }>({ from: null, to: null });
   const socketRef = useRef<Socket | null>(null);
 
+  const [showRating, setShowRating] = useState(false);
+  const [ratingValue, setRatingValue] = useState(0);
+  const [ratingOrderId, setRatingOrderId] = useState<string | null>(null);
+
   const [fromAddress, setFromAddress] = useState("");
   const [toAddress, setToAddress] = useState("");
   const [fromCoords, setFromCoords] = useState<[number, number] | null>(null);
@@ -268,7 +272,35 @@ export default function OrderPage() {
       alert("\u0417\u0430\u043A\u0430\u0437 \u0436\u043E\u043A\u043A\u043E \u0447\u044B\u0433\u0430\u0440\u044B\u043B\u0434\u044B");
     });
 
+    // Real-time driver location on map
+    socket.on("driver:location-live", (data: any) => {
+      if (!driver && !data.driverId) return;
+      const map = leafletMapRef.current;
+      if (!map) return;
+      
+      const L = (window as any).L;
+      if (!L) return;
+
+      // Create or move driver marker
+      if (!(window as any).__driverMarker) {
+        const driverIcon = L.divIcon({
+          html: '<div style="width:32px;height:32px;background:#ef4444;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3)"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg></div>',
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+        });
+        (window as any).__driverMarker = L.marker([data.lat, data.lng], { icon: driverIcon }).addTo(map);
+      } else {
+        (window as any).__driverMarker.setLatLng([data.lat, data.lng]);
+      }
+    });
+
     return () => {
+      // Clean up driver marker
+      if ((window as any).__driverMarker && leafletMapRef.current) {
+        leafletMapRef.current.removeLayer((window as any).__driverMarker);
+        (window as any).__driverMarker = null;
+      }
       socket.disconnect();
       socketRef.current = null;
     };
@@ -616,7 +648,7 @@ export default function OrderPage() {
               padding: "4px 0",
             }}
           >
-            {price.toLocaleString()} som
+            {price.toLocaleString()} сом
           </div>
         )}
 
@@ -753,23 +785,131 @@ export default function OrderPage() {
 
           <button
             onClick={() => {
+              setRatingOrderId(orderId);
+              setShowRating(true);
               setDriver(null);
-              setOrderId(null);
               setSearching(false);
             }}
             style={{
               width: "100%",
               padding: "12px",
               borderRadius: 10,
-              border: "1px solid rgba(255,255,255,0.2)",
-              background: "rgba(255,255,255,0.1)",
+              border: "none",
+              background: "linear-gradient(135deg, #22c55e, #16a34a)",
               color: "white",
               fontSize: 14,
               fontWeight: 600,
               cursor: "pointer",
             }}
           >
-            Close
+            Жолду аяктоо
+          </button>
+        </div>
+      )}
+
+      {/* Rating Modal */}
+      {showRating && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 400,
+            background: "rgba(0,0,0,0.85)",
+            backdropFilter: "blur(8px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 20,
+            padding: 20,
+          }}
+        >
+          <h2 style={{ color: "white", fontSize: 20, fontWeight: 700, margin: 0 }}>
+            Айдоочуну баалаңыз
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, margin: 0 }}>
+            Жолуңуз кандай болду?
+          </p>
+
+          {/* Stars */}
+          <div style={{ display: "flex", gap: 8 }}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                onClick={() => setRatingValue(star)}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  border: "none",
+                  background: ratingValue >= star ? "#facc15" : "rgba(255,255,255,0.1)",
+                  fontSize: 24,
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  transform: ratingValue >= star ? "scale(1.1)" : "scale(1)",
+                }}
+              >
+                ★
+              </button>
+            ))}
+          </div>
+
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>
+            {ratingValue === 1 && "Жаман"}
+            {ratingValue === 2 && "Ортого жакын"}
+            {ratingValue === 3 && "Орточо"}
+            {ratingValue === 4 && "Жакшы"}
+            {ratingValue === 5 && "Мыкты!"}
+          </p>
+
+          <button
+            onClick={async () => {
+              if (ratingValue > 0 && ratingOrderId) {
+                try {
+                  await fetch(`${API_URL}/api/orders/${ratingOrderId}/rate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ rating: ratingValue }),
+                  });
+                } catch {}
+              }
+              setShowRating(false);
+              setRatingValue(0);
+              setRatingOrderId(null);
+              setOrderId(null);
+            }}
+            style={{
+              width: "100%",
+              maxWidth: 280,
+              padding: "14px",
+              borderRadius: 12,
+              border: "none",
+              background: ratingValue > 0 ? "linear-gradient(135deg, #facc15, #eab308)" : "rgba(255,255,255,0.15)",
+              color: ratingValue > 0 ? "#000" : "rgba(255,255,255,0.4)",
+              fontSize: 16,
+              fontWeight: 700,
+              cursor: ratingValue > 0 ? "pointer" : "default",
+            }}
+          >
+            {ratingValue > 0 ? "Баалоо" : "Өткөрүп жиберүү"}
+          </button>
+
+          <button
+            onClick={() => {
+              setShowRating(false);
+              setRatingValue(0);
+              setRatingOrderId(null);
+              setOrderId(null);
+            }}
+            style={{
+              background: "none",
+              border: "none",
+              color: "rgba(255,255,255,0.4)",
+              fontSize: 13,
+              cursor: "pointer",
+            }}
+          >
+            Баалабай калтыруу
           </button>
         </div>
       )}

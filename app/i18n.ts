@@ -65,7 +65,7 @@ export const TEXTS: Record<Lang, Record<string, string>> = {
     distance: "Distance",
     price: "Price",
     km: "km",
-    som: "som",
+    som: "сом",
     driverFound: "Driver found",
     waiting: "Please wait",
     close: "Close",
