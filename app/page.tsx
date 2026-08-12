@@ -11,7 +11,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const token = localStorage.getItem("client-token");
-    if (!token) { router.replace("/login"); return; }
+    if (!token || token === 'guest') { router.replace("/login"); return; }
 
     // Smooth animation sequence
     setTimeout(() => setStep(1), 200);   // icon appears
