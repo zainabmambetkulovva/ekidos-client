@@ -1,4 +1,4 @@
-/* Ekidos client - minimal global reset */
+/* Ekidos client - Navy Mirage theme */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -7,7 +7,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #0a0a0a;
+  background: #141E30;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,7 +25,7 @@ button {
 
 /* Leaflet dark theme overrides */
 .leaflet-container {
-  background: #1a1a2e !important;
+  background: #141E30 !important;
   font-family: inherit !important;
 }
 

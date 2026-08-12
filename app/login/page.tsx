@@ -50,7 +50,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+    <div style={{ minHeight: '100vh', background: '#141E30', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
       <h1 style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>
         EKIDOS <span style={{ color: '#ef4444' }}>TAXI</span>
       </h1>
@@ -133,8 +133,8 @@ export default function LoginPage() {
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '13px 16px',
-  background: '#1a1a1a',
-  border: '1px solid #2a2a2a',
+  background: '#1a2740',
+  border: '1px solid #35577D',
   borderRadius: 12,
   color: '#fff',
   fontSize: 15,
