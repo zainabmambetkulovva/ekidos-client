@@ -94,8 +94,6 @@ export default function HomePage() {
       {/* Burger Menu */}
       <div style={{
         position: "absolute", top: 48, right: 24, zIndex: 100,
-        opacity: step >= 4 ? 1 : 0,
-        transition: "all 0.6s ease",
       }}>
         <button
           onClick={() => setMenuOpen(!menuOpen)}

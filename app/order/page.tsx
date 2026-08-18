@@ -409,29 +409,57 @@ export default function OrderPage() {
       />
 
       {/* Burger Menu Button */}
-      <button
-        onClick={() => router.push("/settings")}
-        style={{
-          position: "absolute",
-          top: 16,
-          left: 16,
-          zIndex: 200,
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "white",
-          border: "none",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          fontSize: 18,
-        }}
-        aria-label="Menu"
-      >
-        &#9776;
-      </button>
+      <div style={{ position: "absolute", top: 16, left: 16, zIndex: 200 }}>
+        <button
+          onClick={() => {
+            const menu = document.getElementById('order-burger-menu');
+            if (menu) menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+          }}
+          style={{
+            width: 44, height: 44, borderRadius: "50%",
+            background: "white", border: "none",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", fontSize: 18,
+          }}
+          aria-label="Menu"
+        >
+          &#9776;
+        </button>
+        {/* Dropdown */}
+        <div id="order-burger-menu" style={{
+          display: 'none', position: 'absolute', top: '100%', left: 0,
+          marginTop: 8, background: '#fff', borderRadius: 16,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+          overflow: 'hidden', minWidth: 180, zIndex: 300,
+        }}>
+          <button
+            onClick={() => router.push("/profile")}
+            style={{
+              width: "100%", padding: "14px 18px",
+              background: "none", border: "none",
+              borderBottom: "1px solid #f0f0f0",
+              display: "flex", alignItems: "center", gap: 12,
+              cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
+              textAlign: "left",
+            }}
+          >
+            <span style={{ fontSize: 18 }}>👤</span> Профиль
+          </button>
+          <button
+            onClick={() => router.push("/settings")}
+            style={{
+              width: "100%", padding: "14px 18px",
+              background: "none", border: "none",
+              display: "flex", alignItems: "center", gap: 12,
+              cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
+              textAlign: "left",
+            }}
+          >
+            <span style={{ fontSize: 18 }}>⚙️</span> Настройки
+          </button>
+        </div>
+      </div>
 
       {/* Back to home */}
       <button
