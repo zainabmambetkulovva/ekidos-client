@@ -8,6 +8,7 @@ export default function HomePage() {
   const router = useRouter();
   const [phase, setPhase] = useState<"splash" | "home">("splash");
   const [step, setStep] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("client-token");
@@ -88,7 +89,84 @@ export default function HomePage() {
       alignItems: "center", justifyContent: "center",
       padding: 32,
       overflow: "hidden",
+      position: "relative",
     }}>
+      {/* Burger Menu */}
+      <div style={{
+        position: "absolute", top: 48, right: 24, zIndex: 100,
+        opacity: step >= 4 ? 1 : 0,
+        transition: "all 0.6s ease",
+      }}>
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{
+            width: 44, height: 44, borderRadius: 12,
+            background: "#fff", border: "1px solid #e5e5e5",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            gap: 5, boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{
+            width: 20, height: 2, background: "#333", borderRadius: 2,
+          }} />
+          <div style={{
+            width: 20, height: 2, background: "#333", borderRadius: 2,
+          }} />
+          <div style={{
+            width: 20, height: 2, background: "#333", borderRadius: 2,
+          }} />
+        </button>
+
+        {/* Menu Dropdown */}
+        {menuOpen && (
+          <>
+            <div
+              style={{
+                position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)",
+                zIndex: 99,
+              }}
+              onClick={() => setMenuOpen(false)}
+            />
+            <div style={{
+              position: "absolute", top: "100%", right: 0,
+              marginTop: 8, background: "#fff", borderRadius: 16,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+              overflow: "hidden", minWidth: 180,
+            }}>
+              <button
+                onClick={() => { setMenuOpen(false); router.push("/profile"); }}
+                style={{
+                  width: "100%", padding: "14px 18px",
+                  background: "none", border: "none",
+                  borderBottom: "1px solid #f0f0f0",
+                  display: "flex", alignItems: "center", gap: 12,
+                  cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
+                  textAlign: "left",
+                }}
+              >
+                <span style={{ fontSize: 18 }}>👤</span>
+                Профиль
+              </button>
+              <button
+                onClick={() => { setMenuOpen(false); router.push("/settings"); }}
+                style={{
+                  width: "100%", padding: "14px 18px",
+                  background: "none", border: "none",
+                  display: "flex", alignItems: "center", gap: 12,
+                  cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
+                  textAlign: "left",
+                }}
+              >
+                <span style={{ fontSize: 18 }}>⚙️</span>
+                Настройки
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
       {/* EKIDOS top */}
       <div style={{
         position: "absolute", top: 48, left: "50%", transform: "translateX(-50%)",
