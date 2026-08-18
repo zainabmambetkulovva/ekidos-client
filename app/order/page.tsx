@@ -408,8 +408,8 @@ export default function OrderPage() {
         }}
       />
 
-      {/* Burger Menu Button */}
-      <div style={{ position: "absolute", top: 16, left: 16, zIndex: 200 }}>
+      {/* Burger Menu - LEFT side with Profile + Settings inline */}
+      <div style={{ position: "absolute", top: 16, left: 16, zIndex: 300 }}>
         <button
           onClick={() => {
             const menu = document.getElementById('order-burger-menu');
@@ -419,22 +419,27 @@ export default function OrderPage() {
             width: 44, height: 44, borderRadius: "50%",
             background: "white", border: "none",
             boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", fontSize: 18,
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            gap: 5, cursor: "pointer",
           }}
           aria-label="Menu"
         >
-          &#9776;
+          <div style={{ width: 18, height: 2, background: "#333", borderRadius: 2 }} />
+          <div style={{ width: 18, height: 2, background: "#333", borderRadius: 2 }} />
+          <div style={{ width: 18, height: 2, background: "#333", borderRadius: 2 }} />
         </button>
+
         {/* Dropdown */}
         <div id="order-burger-menu" style={{
           display: 'none', position: 'absolute', top: '100%', left: 0,
           marginTop: 8, background: '#fff', borderRadius: 16,
           boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-          overflow: 'hidden', minWidth: 180, zIndex: 300,
+          overflow: 'hidden', minWidth: 220, zIndex: 400,
         }}>
+          {/* Profile button */}
           <button
-            onClick={() => router.push("/profile")}
+            onClick={() => { document.getElementById('order-burger-menu')!.style.display='none'; router.push("/profile"); }}
             style={{
               width: "100%", padding: "14px 18px",
               background: "none", border: "none",
@@ -444,46 +449,96 @@ export default function OrderPage() {
               textAlign: "left",
             }}
           >
-            <span style={{ fontSize: 18 }}>👤</span> Профиль
+            <span style={{ fontSize: 20 }}>👤</span>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>Профиль</div>
+              <div style={{ fontSize: 11, color: "#999" }}>Аты, email, телефон</div>
+            </div>
           </button>
+
+          {/* Settings - notifications toggle */}
+          <div style={{ padding: "12px 18px", borderBottom: "1px solid #f0f0f0" }}>
+            <div style={{ fontSize: 11, color: "#999", fontWeight: 600, textTransform: "uppercase", marginBottom: 10 }}>Настройки</div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+              <span style={{ fontSize: 14, color: "#333" }}>🔔 Уведомления</span>
+              <button
+                id="notif-toggle"
+                onClick={() => {
+                  try {
+                    const raw = localStorage.getItem("ekidos-settings");
+                    const s = raw ? JSON.parse(raw) : { notifications: true, darkMode: true, language: "ru" };
+                    s.notifications = !s.notifications;
+                    localStorage.setItem("ekidos-settings", JSON.stringify(s));
+                    const btn = document.getElementById('notif-toggle') as any;
+                    if (btn) btn.style.background = s.notifications ? "#ef4444" : "#ddd";
+                  } catch {}
+                }}
+                style={{
+                  width: 44, height: 26, borderRadius: 13,
+                  background: "#ef4444", border: "none", cursor: "pointer",
+                  position: "relative", transition: "background 0.2s",
+                }}
+              >
+                <div style={{ position: "absolute", top: 3, right: 3, width: 20, height: 20, borderRadius: "50%", background: "#fff" }} />
+              </button>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 14, color: "#333" }}>🌙 Темная тема</span>
+              <button
+                id="dark-toggle"
+                onClick={() => {
+                  try {
+                    const raw = localStorage.getItem("ekidos-settings");
+                    const s = raw ? JSON.parse(raw) : { notifications: true, darkMode: true, language: "ru" };
+                    s.darkMode = !s.darkMode;
+                    localStorage.setItem("ekidos-settings", JSON.stringify(s));
+                    const btn = document.getElementById('dark-toggle') as any;
+                    if (btn) btn.style.background = s.darkMode ? "#ef4444" : "#ddd";
+                  } catch {}
+                }}
+                style={{
+                  width: 44, height: 26, borderRadius: 13,
+                  background: "#ef4444", border: "none", cursor: "pointer",
+                  position: "relative", transition: "background 0.2s",
+                }}
+              >
+                <div style={{ position: "absolute", top: 3, right: 3, width: 20, height: 20, borderRadius: "50%", background: "#fff" }} />
+              </button>
+            </div>
+          </div>
+
+          {/* Logout */}
           <button
-            onClick={() => router.push("/settings")}
+            onClick={() => {
+              document.getElementById('order-burger-menu')!.style.display='none';
+              localStorage.removeItem("client-token");
+              localStorage.removeItem("clientInfo");
+              router.replace("/login");
+            }}
             style={{
-              width: "100%", padding: "14px 18px",
+              width: "100%", padding: "13px 18px",
               background: "none", border: "none",
               display: "flex", alignItems: "center", gap: 12,
-              cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
+              cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#ef4444",
               textAlign: "left",
             }}
           >
-            <span style={{ fontSize: 18 }}>⚙️</span> Настройки
+            <span style={{ fontSize: 18 }}>🚪</span> Чыгуу
           </button>
         </div>
-      </div>
 
-      {/* Back to home */}
-      <button
-        onClick={() => router.push("/")}
-        style={{
-          position: "absolute",
-          top: 16,
-          left: 68,
-          zIndex: 200,
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "white",
-          border: "none",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          fontSize: 20,
-        }}
-      >
-        &#8592;
-      </button>
+        {/* Click outside to close */}
+        <div
+          id="burger-overlay"
+          style={{ display: 'none', position: 'fixed', inset: 0, zIndex: 299 }}
+          onClick={() => {
+            const menu = document.getElementById('order-burger-menu');
+            const overlay = document.getElementById('burger-overlay');
+            if (menu) menu.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
+          }}
+        />
+      </div>
 
       {/* Picking Point Indicator */}
       {pickingPoint && (
