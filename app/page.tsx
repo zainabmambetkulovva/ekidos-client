@@ -8,18 +8,16 @@ export default function HomePage() {
   const router = useRouter();
   const [phase, setPhase] = useState<"splash" | "home">("splash");
   const [step, setStep] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("client-token");
     if (!token || token === 'guest') { router.replace("/login"); return; }
 
-    // Smooth animation sequence
-    setTimeout(() => setStep(1), 200);   // icon appears
-    setTimeout(() => setStep(2), 800);   // text appears
-    setTimeout(() => setStep(3), 2200);  // transition to home
+    setTimeout(() => setStep(1), 200);
+    setTimeout(() => setStep(2), 800);
+    setTimeout(() => setStep(3), 2200);
     setTimeout(() => setPhase("home"), 2600);
-    setTimeout(() => setStep(4), 2900);  // home content appears
+    setTimeout(() => setStep(4), 2900);
   }, [router]);
 
   // SPLASH
@@ -34,7 +32,6 @@ export default function HomePage() {
         transition: "opacity 0.5s ease",
         opacity: step >= 3 ? 0 : 1,
       }}>
-        {/* Taxi icon */}
         <div style={{
           width: 120, height: 120, borderRadius: "50%",
           background: "#fef1f1",
@@ -46,31 +43,16 @@ export default function HomePage() {
         }}>
           {"\u{1F696}"}
         </div>
-
-        {/* Welcome text */}
         <div style={{
           opacity: step >= 2 ? 1 : 0,
           transform: step >= 2 ? "translateY(0)" : "translateY(15px)",
           transition: "all 0.6s ease 0.1s",
           textAlign: "center",
         }}>
-          <div style={{ fontSize: 32, fontWeight: 800, color: "#ef4444", letterSpacing: -1 }}>
-            EKIDOS
-          </div>
-          <div style={{
-            fontSize: 16, color: "#888", marginTop: 8,
-            letterSpacing: 2, fontWeight: 500,
-          }}>
-            Welcome
-          </div>
+          <div style={{ fontSize: 32, fontWeight: 800, color: "#ef4444", letterSpacing: -1 }}>EKIDOS</div>
+          <div style={{ fontSize: 16, color: "#888", marginTop: 8, letterSpacing: 2, fontWeight: 500 }}>Welcome</div>
         </div>
-
-        {/* Subtle dots */}
-        <div style={{
-          display: "flex", gap: 6, marginTop: 20,
-          opacity: step >= 2 ? 0.6 : 0,
-          transition: "opacity 0.8s ease 0.3s",
-        }}>
+        <div style={{ display: "flex", gap: 6, marginTop: 20, opacity: step >= 2 ? 0.6 : 0, transition: "opacity 0.8s ease 0.3s" }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite" }} />
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite 0.2s" }} />
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444", animation: "pulse 1.4s infinite 0.4s" }} />
@@ -80,7 +62,7 @@ export default function HomePage() {
     );
   }
 
-  // HOME
+  // HOME — NO burger menu here
   return (
     <div style={{
       height: "100vh", width: "100vw",
@@ -91,92 +73,16 @@ export default function HomePage() {
       overflow: "hidden",
       position: "relative",
     }}>
-      {/* Burger Menu */}
-      <div style={{
-        position: "absolute", top: 48, right: 24, zIndex: 100,
-      }}>
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          style={{
-            width: 44, height: 44, borderRadius: 12,
-            background: "#fff", border: "1px solid #e5e5e5",
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            gap: 5, boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-            cursor: "pointer",
-          }}
-        >
-          <div style={{
-            width: 20, height: 2, background: "#333", borderRadius: 2,
-          }} />
-          <div style={{
-            width: 20, height: 2, background: "#333", borderRadius: 2,
-          }} />
-          <div style={{
-            width: 20, height: 2, background: "#333", borderRadius: 2,
-          }} />
-        </button>
-
-        {/* Menu Dropdown */}
-        {menuOpen && (
-          <>
-            <div
-              style={{
-                position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)",
-                zIndex: 99,
-              }}
-              onClick={() => setMenuOpen(false)}
-            />
-            <div style={{
-              position: "absolute", top: "100%", right: 0,
-              marginTop: 8, background: "#fff", borderRadius: 16,
-              boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-              overflow: "hidden", minWidth: 180,
-            }}>
-              <button
-                onClick={() => { setMenuOpen(false); router.push("/profile"); }}
-                style={{
-                  width: "100%", padding: "14px 18px",
-                  background: "none", border: "none",
-                  borderBottom: "1px solid #f0f0f0",
-                  display: "flex", alignItems: "center", gap: 12,
-                  cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
-                  textAlign: "left",
-                }}
-              >
-                <span style={{ fontSize: 18 }}>👤</span>
-                Профиль
-              </button>
-              <button
-                onClick={() => { setMenuOpen(false); router.push("/settings"); }}
-                style={{
-                  width: "100%", padding: "14px 18px",
-                  background: "none", border: "none",
-                  display: "flex", alignItems: "center", gap: 12,
-                  cursor: "pointer", fontSize: 15, fontWeight: 600, color: "#333",
-                  textAlign: "left",
-                }}
-              >
-                <span style={{ fontSize: 18 }}>⚙️</span>
-                Настройки
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* EKIDOS top */}
+      {/* EKIDOS logo top center */}
       <div style={{
         position: "absolute", top: 48, left: "50%", transform: "translateX(-50%)",
         opacity: step >= 4 ? 1 : 0,
         transition: "all 0.6s ease",
       }}>
-        <div style={{ fontSize: 20, fontWeight: 800, color: "#ef4444", letterSpacing: -0.5 }}>
-          EKIDOS
-        </div>
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#ef4444", letterSpacing: -0.5 }}>EKIDOS</div>
       </div>
 
-      {/* Center */}
+      {/* Center content */}
       <div style={{
         opacity: step >= 4 ? 1 : 0,
         transform: step >= 4 ? "translateY(0)" : "translateY(40px)",
@@ -184,7 +90,6 @@ export default function HomePage() {
         display: "flex", flexDirection: "column", alignItems: "center",
         gap: 28,
       }}>
-        {/* Taxi icon - same as splash */}
         <div style={{
           width: 100, height: 100, borderRadius: "50%",
           background: "#fef1f1",
@@ -194,32 +99,25 @@ export default function HomePage() {
           {"\u{1F696}"}
         </div>
 
-        {/* Heading */}
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 26, fontWeight: 800, color: "#1a1a1a", lineHeight: 1.3 }}>
             {t("orderTaxi").replace(/\u{1F696}\s*/u, "")}
           </div>
-          <div style={{ fontSize: 14, color: "#999", marginTop: 8 }}>
-            {t("subtitle")}
-          </div>
+          <div style={{ fontSize: 14, color: "#999", marginTop: 8 }}>{t("subtitle")}</div>
         </div>
 
-        {/* Big red button */}
+        {/* Big red button → goes to /order */}
         <button
           onClick={() => router.push("/order")}
           style={{
             width: "100%", maxWidth: 300,
             padding: "18px 32px",
             background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-            border: "none",
-            borderRadius: 18,
-            color: "#fff",
-            fontSize: 18,
-            fontWeight: 700,
+            border: "none", borderRadius: 18,
+            color: "#fff", fontSize: 18, fontWeight: 700,
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             boxShadow: "0 10px 36px rgba(239,68,68,0.3), 0 4px 12px rgba(0,0,0,0.08)",
-            cursor: "pointer",
-            transition: "transform 0.15s, box-shadow 0.15s",
+            cursor: "pointer", transition: "transform 0.15s, box-shadow 0.15s",
           }}
           onMouseDown={e => { e.currentTarget.style.transform = "scale(0.96)"; }}
           onMouseUp={e => { e.currentTarget.style.transform = "scale(1)"; }}
@@ -231,11 +129,9 @@ export default function HomePage() {
         </button>
       </div>
 
-      {/* Bottom */}
       <div style={{
         position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
-        opacity: step >= 4 ? 1 : 0,
-        transition: "opacity 0.8s ease 0.5s",
+        opacity: step >= 4 ? 1 : 0, transition: "opacity 0.8s ease 0.5s",
         fontSize: 12, color: "#ccc",
       }}>
         Toktogul, Kyrgyzstan
